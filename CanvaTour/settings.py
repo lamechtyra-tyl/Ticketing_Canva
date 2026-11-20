@@ -9,7 +9,8 @@ https://docs.djangoproject.com/en/6.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/6.1/ref/settings/
 """
-
+import os
+import dj_database_url
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -20,12 +21,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/6.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-s!o%$1qj2#$0vnl#i+(h65hqr7fr258)y&u%76id6tq%0a3z82'
+SECRET_KEY = ("SECRET_KEY", "django-insecure-s!o%$1qj2#$0vnl#i+(h65hqr7fr258)y&u%76id6tq%0a3z82")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ.get("DEBUG", "True") == "True"
 
-ALLOWED_HOSTS = ['127.0.0.1', '', 'setting-reproduce-handiwork.ngrok-free.dev']
+ALLOWED_HOSTS = [".onrender.com", '127.0.0.1', 'localhost', 'setting-reproduce-handiwork.ngrok-free.dev']
 
 
 # Application definition
@@ -43,6 +44,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -130,6 +132,7 @@ USE_TZ = True
 import os
 
 STATIC_URL = 'static/'
+STATIC_ROOT = BASE_DIR / "staticfiles"
 #STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 
 import os
