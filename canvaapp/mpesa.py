@@ -6,6 +6,7 @@ from urllib.parse import urlparse
 
 import requests
 from django.conf import settings
+from django.urls import reverse
 
 
 class DarajaError(Exception):
@@ -73,6 +74,11 @@ def _daraja_settings():
     if callback.scheme != 'https' or not callback.netloc:
         raise DarajaConfigurationError(
             'Set DARAJA_CALLBACK_URL to a publicly reachable HTTPS callback URL.'
+        )
+    callback_path = reverse('mpesa-callback')
+    if callback.path.rstrip('/') != callback_path.rstrip('/'):
+        raise DarajaConfigurationError(
+            f'DARAJA_CALLBACK_URL must point to the {callback_path} endpoint.'
         )
     if settings.DARAJA_TRANSACTION_TYPE not in (
         'CustomerPayBillOnline',

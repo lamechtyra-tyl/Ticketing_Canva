@@ -25,13 +25,17 @@ environment variables on the Django web process before starting it:
 - `DARAJA_ENV`: `sandbox` (default) or `production`.
 - `DARAJA_CONSUMER_KEY` and `DARAJA_CONSUMER_SECRET`: credentials for the selected Daraja app.
 - `DARAJA_SHORTCODE` and `DARAJA_PASSKEY`: the shortcode and matching STK passkey.
-- `DARAJA_CALLBACK_URL`: a public HTTPS URL ending in `/api/mpesa/callback/`.
+- `DARAJA_CALLBACK_URL`: a public HTTPS URL ending in `/api/payments/callback/`.
 - `DARAJA_TRANSACTION_TYPE`: `CustomerPayBillOnline` (default) or
   `CustomerBuyGoodsOnline`, matching the shortcode.
 
 For local sandbox testing, expose the Django callback endpoint through a public
 HTTPS tunnel and register the same URL with Daraja. Safaricom must be able to
 reach it. Do not use a localhost URL or commit credentials to source control.
+For example, set `DARAJA_CALLBACK_URL` to
+`https://<active-public-host>/api/payments/callback/` in the same environment as
+the Django server. The URL must use the current tunnel hostname and the exact
+callback path; restart Django after changing it.
 
 After configuration, apply the database changes with `python manage.py migrate`.
 The booking UI allows one ticket category and one payment method per booking.

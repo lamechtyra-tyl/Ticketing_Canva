@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-s!o%$1qj2#$0vnl#i+(h65hqr7fr258)y&u%76id6tq%0a3z82
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['127.0.0.1', '', 'setting-reproduce-handiwork.ngrok-free.dev']
 
 
 # Application definition
@@ -138,11 +138,11 @@ DARAJA_BASE_URL = {
     'sandbox': 'https://sandbox.safaricom.co.ke',
     'production': 'https://api.safaricom.co.ke',
 }.get(DARAJA_ENV, '')
-DARAJA_CONSUMER_KEY = os.environ.get('DARAJA_CONSUMER_KEY')
-DARAJA_CONSUMER_SECRET = os.environ.get('DARAJA_CONSUMER_SECRET')
-DARAJA_SHORTCODE = os.environ.get('DARAJA_SHORTCODE', '')
+DARAJA_CONSUMER_KEY = os.environ.get('DARAJA_CONSUMER_KEY', '')
+DARAJA_CONSUMER_SECRET = os.environ.get('DARAJA_CONSUMER_SECRET', '')
+DARAJA_SHORTCODE = '174379'
 DARAJA_PASSKEY = os.environ.get('DARAJA_PASSKEY', '')
-DARAJA_CALLBACK_URL = os.environ.get('DARAJA_CALLBACK_URL', '')
+DARAJA_CALLBACK_URL = os.environ.get('DARAJA_CALLBACK_URL', '').strip()
 DARAJA_TRANSACTION_TYPE = os.environ.get(
     'DARAJA_TRANSACTION_TYPE', 'CustomerPayBillOnline'
 )
@@ -152,8 +152,8 @@ PAYPAL_BASE_URL = {
     'sandbox': 'https://api-m.sandbox.paypal.com',
     'production': 'https://api-m.paypal.com',
 }.get(PAYPAL_ENV, '')
-PAYPAL_CLIENT_ID = 'BAAgHPtiV6mHReoNnPgRsNjbuzrrxpec58ZuZOyzg1ws-S0DvsvbzIUF_bYu-q4LNNPlP1twOMkdmAXQhs'
-PAYPAL_CLIENT_SECRET = 'EGP6Vy6mLApQ_yrXzE3ZhU9BBFBMoMFsyaoKg78z5vwkCnmeTwzrbEXy9DUyWV3KgHXzKBuX5bCHmrXr'
+PAYPAL_CLIENT_ID = "<your sandbox client ID>"
+PAYPAL_CLIENT_SECRET = "<your sandbox secret>"
 PAYPAL_CURRENCY = 'USD'
 PAYPAL_KES_PER_USD = os.environ.get('PAYPAL_KES_PER_USD', '129.82')
 

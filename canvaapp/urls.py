@@ -23,7 +23,7 @@ urlpatterns = [
     ),
     path('api/', include(router.urls)),
     path('api/mpesa/stkpush/', StkPush.as_view()),
-    path('api/mpesa/callback/', MpesaCallback.as_view(), name='mpesa-callback'),
+    path('api/payments/callback/', MpesaCallback.as_view(), name='mpesa-callback'),
     path('api/paypal/create-order/', PayPalOrder.as_view(), name='paypal-create-order'),
     path('api/paypal/capture/', PayPalCapture.as_view(), name='paypal-capture'),
     path('paypal/return/', PayPalReturn.as_view(), name='paypal-return'),

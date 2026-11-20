@@ -137,7 +137,7 @@ class TicketPaymentTests(TestCase):
 
     @override_settings(
         DARAJA_BASE_URL='https://sandbox.safaricom.co.ke',
-        DARAJA_CALLBACK_URL='https://example.test/api/mpesa/callback/',
+        DARAJA_CALLBACK_URL='https://example.test/api/payments/callback/',
         DARAJA_CONSUMER_KEY='test-key',
         DARAJA_CONSUMER_SECRET='test-secret',
         DARAJA_SHORTCODE='174379',
@@ -434,7 +434,7 @@ class TicketPaymentTests(TestCase):
         )
 
         response = self.client.post(
-            '/api/mpesa/callback/',
+            '/api/payments/callback/',
             self.callback_data('checkout-success'),
             format='json',
         )
@@ -462,7 +462,7 @@ class TicketPaymentTests(TestCase):
         )
 
         response = self.client.post(
-            '/api/mpesa/callback/',
+            '/api/payments/callback/',
             self.callback_data(
                 'checkout-merchant-mismatch',
                 merchant_id='merchant-other',
@@ -484,7 +484,7 @@ class TicketPaymentTests(TestCase):
         )
 
         response = self.client.post(
-            '/api/mpesa/callback/',
+            '/api/payments/callback/',
             self.callback_data('checkout-mismatch', amount=1000),
             format='json',
         )
@@ -503,7 +503,7 @@ class TicketPaymentTests(TestCase):
         )
 
         response = self.client.post(
-            '/api/mpesa/callback/',
+            '/api/payments/callback/',
             {
                 'Body': {
                     'stkCallback': {
@@ -544,4 +544,26 @@ class TicketPaymentTests(TestCase):
         self.assertEqual(response.status_code, 503)
         ticket.refresh_from_db()
         self.assertEqual(ticket.status, 'failed')
+        self.assertFalse(Payment.objects.filter(ticket=ticket).exists())
+
+    @override_settings(
+        DARAJA_BASE_URL='https://sandbox.safaricom.co.ke',
+        DARAJA_CALLBACK_URL='https://example.test/api/mpesa/callback/',
+        DARAJA_CONSUMER_KEY='test-key',
+        DARAJA_CONSUMER_SECRET='test-secret',
+        DARAJA_SHORTCODE='174379',
+        DARAJA_PASSKEY='test-passkey',
+        DARAJA_TRANSACTION_TYPE='CustomerPayBillOnline',
+    )
+    def test_stk_push_rejects_wrong_callback_endpoint_before_provider_request(self):
+        ticket = self.create_ticket()
+
+        response = self.client.post(
+            '/api/mpesa/stkpush/',
+            {'code': ticket.code},
+            format='json',
+        )
+
+        self.assertEqual(response.status_code, 503)
+        self.assertIn('/api/payments/callback/', response.data['error'])
         self.assertFalse(Payment.objects.filter(ticket=ticket).exists())
