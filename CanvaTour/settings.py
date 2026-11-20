@@ -152,8 +152,8 @@ PAYPAL_BASE_URL = {
     'sandbox': 'https://api-m.sandbox.paypal.com',
     'production': 'https://api-m.paypal.com',
 }.get(PAYPAL_ENV, '')
-PAYPAL_CLIENT_ID = "<your sandbox client ID>"
-PAYPAL_CLIENT_SECRET = "<your sandbox secret>"
+PAYPAL_CLIENT_ID = os.environ.get('PAYPAL_CLIENT_ID', '')
+PAYPAL_CLIENT_SECRET = os.environ.get('PAYPAL_CLIENT_SECRET', '')
 PAYPAL_CURRENCY = 'USD'
 PAYPAL_KES_PER_USD = os.environ.get('PAYPAL_KES_PER_USD', '129.82')
 
