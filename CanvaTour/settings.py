@@ -83,7 +83,17 @@ WSGI_APPLICATION = 'CanvaTour.wsgi.application'
         # 'NAME': BASE_DIR / 'db.sqlite3',
     # }
 # }
-DATABASES = {
+
+if os.environ.get('DATABASE_URL'):
+  DATABASES = {
+    'default':
+    dj_database_url.config(
+      conn_max_age=600,
+      ssl_require=True
+    )
+  }
+else:
+  DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'canva_db',
